@@ -1,22 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-var connection = mysql.createConnection({
+//Connecting to mysql
+const connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'atul512191'
+  password : 'atul512191',
+  database : 'inventoryManagement'
 });
 
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
- 
-  console.log('connected as id ' + connection.threadId);
+connection.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to MySQL server!');
 });
+
 
 
 let app = express();
@@ -26,27 +25,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-var numberOfItems = 1;
-var selection=0;
-
-const products = [
-  {
-    'productID': "1",
-    'Name': "Soap",
-    'CategoryID': "2",
-    'SupplierID': "3",
-    'Cost': "12",
-    'Units': "100"
-  },
-  {
-    'productID': "2",
-    'Name': "Handle",
-    'CategoryID': "3",
-    'SupplierID': "2",
-    'Cost': "16",
-    'Units': "90"
-  }
-];
+var selection = 0;
 
 app.get("/trans", (req, res)=>{
   res.render("transaction", {
@@ -55,15 +34,32 @@ app.get("/trans", (req, res)=>{
 })
 
 app.get("/inv/edit", (req, res)=>{
-  res.render("inventoryEdit", {
-    style: "#",
-    selection: selection
-  });
+  connection.query("Select product_id from products", (error, results, fields) => {
+    if (error) throw error;
+    let length = results.length;
+    res.render("inventoryEdit", {
+      style: "#",
+      selection: selection,
+      results: results,
+      length: length
+    });
+    })
+  
 });
 
 app.post("/inv/edit", (req, res)=>{
-  const selection=req.body.update;
-  console.log(selection);
+  const up=req.body.update;
+  const del = req.body.del;
+  const new1 = req.body.new;
+
+  if(up == 1){
+    selection=up;
+  }else if(new1==2){
+    selection = new1;
+  }else if(del == 3){
+    selection = del;
+  }
+
   res.redirect("/inv/edit");
 });
   
@@ -73,21 +69,105 @@ app.get("/", (req, res)=>{
   });
 });
 
+app.post("/addItem", (req, res)=>{
+  const name = req.body.name;
+  const category = req.body.category;
+  const supplier = req.body.supplier;
+  const cost = req.body.cost;
+  const Units = req.body.Units;
+
+  const item = {
+    name: name,
+    Category_ID: category,
+    Supplier_id: supplier,
+    cost: cost,
+    Units: Units
+  };
+
+  connection.query(`INSERT INTO products (Name, Category_ID, Supplier_ID, Cost, Units) VALUES ('${name}', ${category}, ${supplier}, ${cost}, ${Units})`,(err, results, fields) => {
+    if (err) {
+      console.error('error inserting record: ' + err.stack);
+      return;
+    }
+    console.log('record inserted');
+    res.redirect("/inv");
+  });
+
+});
+
+app.post("/updateItem", (req, res)=>{
+  const column = req.body["category-selection"];
+  const value = req.body["value-input"];
+  const id = req.body["id-selection"];
+  console.log(column);
+  console.log(value);
+  console.log(id);
+
+  connection.query(`UPDATE products SET ${column} = '${value}' WHERE PRODUCT_ID = ${id}`,(err, results, fields) => {
+    if (err) {
+      console.error('error updating record: ' + err.stack);
+      return;
+    }
+    console.log('record updated');
+    res.redirect("/inv");
+  });
+
+})
+
+app.post("/deleteItem", (req, res)=>{
+  const id = req.body["id-selection"];
+  console.log(id);
+
+  connection.query(`DELETE FROM products WHERE PRODUCT_ID = ${id}`, (err, results, fields)=>{
+    if (err) {
+      console.error('error deleting record: ' + err.stack);
+      return;
+    }
+    console.log('record deleted');
+    res.redirect("/inv");
+  });
+});
+
 app.get("/inv", (req, res)=>{
-  res.render("inventory", {
-    style: "#",
-    numberOfItems: numberOfItems,
-    products: products
+
+  var resultSet;
+  var length;
+
+  connection.query('SELECT * FROM products', (error, results, fields) => {
+    if (error) throw error;
+    resultSet = results;
+    length = results.length;
+    // console.log('The solution is: ', results);
+    res.render("inventory", {
+      style: "#",
+      numberOfItems: length,
+      products: results
+    });
   });
 });
 
 app.get("/dash", (req, res)=>{
-  res.render("dashboard", {
-    style: "style/dashboard.css"
+  const id = 1;
+  connection.query(`SELECT * FROM USER_INFORMATION WHERE USERID = ${id}`, (error, results, fields) => {
+    if (error) throw error;
+    console.log(results);
+    res.render("dashboard", {
+      style: "style/dashboard.css",
+      companyName: results[0]["Company_name"],
+      userID: results[0]["Userid"],
+      Email: results[0]["Email"],
+      Password: results[0]["Password"],
+      Phone_number: results[0]["Phone_number"],
+      city: results[0]["city"],
+      state: results[0]["state"],
+      country: results[0]["country"]
+    });
   });
+  
 });
 
 
 app.listen(3000, function() {
     console.log("Server started on port 3000");
 });
+

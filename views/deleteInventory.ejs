@@ -1,0 +1,22 @@
+<form action="/deleteItem" method="post" class="p-5">
+
+    <div class="row mt-5">
+        <!-- Select input for the product ID for edit  -->
+        
+        <label for="id-selection">Select the Product ID:</label>
+        
+        <select class="form-select" name="id-selection" size="3" aria-label="size 3 select example">
+            <% for(var i=0; i<length; i++){ %>
+            <option value="<%= results[i].product_id %>"><%= results[i].product_id %></option>
+            <% } %>
+        </select>
+    </div>
+
+    <div class="form-group text-center mt-4">
+        <input type="submit" class="btn btn-outline-info" value="Delete">
+    </div>
+        
+            
+
+</form>
+

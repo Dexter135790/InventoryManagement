@@ -22,14 +22,14 @@
                 <th>Cost</th>
                 <th>Units</th>
             </tr>
-          <% for(var i=0;i<=numberOfItems;i++){    %>
+          <% for(var i=0;i<numberOfItems;i++){    %>
             <tr>
-                <td><%= products[i]["productID"]  %></td>
-                <td><%= products[i]["Name"]  %></td>
-                <td><%= products[i]["CategoryID"]  %></td>
-                <td><%= products[i]["SupplierID"]  %></td>
-                <td><%= products[i]["Cost"]  %></td>
-                <td><%= products[i]["Units"]  %></td>
+                <td><%= products[i].PRODUCT_ID  %></td>
+                <td><%= products[i].NAME  %></td>
+                <td><%= products[i].CATEGORY_ID  %></td>
+                <td><%= products[i].SUPPLIER_ID  %></td>
+                <td><%= products[i].COST  %></td>
+                <td><%= products[i].UNITS  %></td>
             </tr>
          <%  }  %>      
         </table>
