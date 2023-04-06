@@ -1,0 +1,39 @@
+<%- include("sidenavbar") -%>
+
+
+<div class="col-sm p-3 min-vh-100 d-flex flex-column" id="main-content">
+    <div class="row" style="background-color: #CCD5AE;">
+
+     <!-- Heading -->
+     <h1 class="text-center">INVENTORY</h1>
+    </div>
+    <form action="/inv/edit" method="post">
+        <div class="row mt-5">
+            <button type="submit" class="btn btn-outline-primary">Edit Inventory</button>
+        </div>
+    </form>
+    <div class="row mt-5 text-center" id="info">
+        <table class="table table-striped">
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Category ID</th>
+                <th>Supplier ID</th>
+                <th>Cost</th>
+                <th>Units</th>
+            </tr>
+          <% for(var i=0;i<=numberOfItems;i++){    %>
+            <tr>
+                <td><%= products[i]["productID"]  %></td>
+                <td><%= products[i]["Name"]  %></td>
+                <td><%= products[i]["CategoryID"]  %></td>
+                <td><%= products[i]["SupplierID"]  %></td>
+                <td><%= products[i]["Cost"]  %></td>
+                <td><%= products[i]["Units"]  %></td>
+            </tr>
+         <%  }  %>      
+        </table>
+    </div>
+ </div>
+</div>
+<%- include("footer") -%>
