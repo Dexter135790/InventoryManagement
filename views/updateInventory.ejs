@@ -1,20 +1,36 @@
-<form action="" method="post" class="p-5">
+<form action="/updateItem" method="post" class="p-5">
+
+    <div class="row mt-5">
+        <!-- Select input for the product ID for edit  -->
+        
+        <label for="id-selection">Select the Product ID:</label>
+        
+        <select class="form-select" name="id-selection" size="3" aria-label="size 3 select example">
+            <% for(var i=0; i<length; i++){ %>
+            <option value="<%= results[i].product_id %>"><%= results[i].product_id %></option>
+            <% } %>
+        </select>
+    </div>
 
     <!-- Selecting the categories to edit  -->
     <div class="row mt-4">
         <label for="category-selection">Select the category to edit: </label>
-        <select class="form-select form-select mb-3" name="category-selection" aria-label=".form-select example">
-            <option value="1">Name</option>
-            <option value="2">Category ID</option>
-            <option value="3">Supplier ID</option>
-            <option value="4">Cost</option>
-            <option value="5">Units</option>
+        <select class="form-select form-select mb-3" name="category-selection">
+            <option value="Name">Name</option>
+            <option value="Category_ID">Category ID</option>
+            <option value="Supplier_ID">Supplier ID</option>
+            <option value="Cost">Cost</option>
+            <option value="Units">Units</option>
         </select>
     </div>
 
     <div class="form-group row mt-4">
-        <label for="update-input">Enter the value to update</label>
-        <input type="text" name="update-input" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter the value">
+        <label for="value-input">Enter the value to update</label>
+        <input type="text" name="value-input" class="form-control" placeholder="Enter the value">
+    </div>
+
+    <div class="form-group text-center mt-4">
+        <input type="submit" class="btn btn-outline-info" value="Update">
     </div>
         
             

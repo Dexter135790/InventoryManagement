@@ -1,8 +1,29 @@
-<form action="" method="post" class="p-5">
+<form action="/addItem" method="post" class="p-5">
 
-    <div class="form-group row mt-4">
-        <label for="update-input">Name</label>
-        <input type="text" name="update-input" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter the value">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input name="name" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="category">Category ID:</label>
+      <input name="category" type="number" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="supplier">Supplier ID:</label>
+      <input name="supplier" type="number" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="cost">Cost:</label>
+      <input name="cost" type="number" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="Units">Units:</label>
+      <input name="Units" type="number" class="form-control">
+    </div>
+    <div class="row text-center mt-4">
+        <div class="form-group">
+            <input type="submit" class="btn btn-outline-info mx-auto" class="form-control" value="Enter new item">
+        </div>
     </div>
 
 
@@ -10,3 +31,4 @@
             
 
 </form>
+

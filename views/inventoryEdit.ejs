@@ -12,33 +12,35 @@
         <form action="/inv/edit" method="post">
 
             <div class="row mt-5">
-                <!-- Select input for the product ID for edit  -->
                 
-                <label for="id-selection">Select the Product ID:</label>
+                <!-- <label for="id-selection">Select the Product ID:</label>
                 
-                <select class="form-select" name="id-selection" size="3" aria-label="size 3 select example">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <select class="form-select" name="id-selection" ondblclick="SubmitEvent" size="3" aria-label="size 3 select example">
+                    <% for(var i=0; i<length; i++){ %>
+                    <option value="<%= i %>"><%= results[i].product_id %></option>
+                    <% } %>
+                </select> -->
 
             </div>
 
             <div class="row d-flex mt-5">
-                <input type="submit" name="update" class="btn btn-outline-primary" value="1">Update Inventory Item details</input>
-                <input type="submit" class="btn btn-outline-primary" value="2">Enter new Items</input>
-                <input type="submit" class="btn btn-outline-primary" value="3">Delete Item</input>
+                <button type="submit" name="update" class="btn btn-outline-info p-4 bg-info text-dark mb-3" value="1">Update Inventory Item details</button>
+                <button type="submit" name="new" class="btn btn-outline-info p-4 bg-info text-dark mb-3" value="2">Enter new Items</button>
+                <button type="submit" name="del" class="btn btn-outline-info p-4 bg-info text-dark mb-3" value="3">Delete Item</button>
             </div>
 
             </form>
             
-            <% if(selection === 1){ %>
-            <%- include("updateInventory") -%>
-            <% } else if(selection===2){ %>
-            <%- include("enterInventory") -%>
-            <% } else { %>
-            <%- include('deleteInventory') %>
+            <% if(selection == 1){ %>
+                <%- include("updateInventory") -%>
+            <% }else if(selection == 2){ %>
+                <%- include("newItem") -%>
+            <% }else if(selection==3){ %>
+                <%- include("deleteInventory") -%>
             <% } %>
+
+            
+            
 
 
     </div>
